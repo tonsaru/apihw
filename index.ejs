@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://use.fontawesome.com/fae100f333.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Barlow" rel="stylesheet">
+    <title>Customers</title>
+</head>
+<body>
+    <form action="/users" method="post">
+        <h1>Registeration</h1>
+        <div class="form-label">
+            <input required type="email" name="email" id="email" placeholder="Email" oninput="validate(this);" onblur="validate(this);">
+            <label for="email">Email</label>
+        </div>
+        <div class="form-label">
+            <input type="password" name="password" id="password" placeholder="Password" required pattern="\w{6,}" oninput="validate(this);" onblur="validate(this);">
+            <label for="password">Password</label>
+        </div>
+        <div class="form-label">
+            <input type="text" name="name" id="name" placeholder="Name" required oninput="validate(this);" onblur="validate(this);">
+            <label for="name">Name</label>
+        </div>
+        <div class="form-label">
+            <input type="number" name="age" id="age" placeholder="Age" required min="13" oninput="validate(this);" onblur="validate(this);">
+            <label for="age">Age</label>
+        </div>
+        <div>
+            <input class="fa" type="checkbox" name="admin" id="admin">
+            <label for="admin">Admin</label>
+        </div>
+        <button onclick="submit">Register</button>
+    </form>
+
+    <div class="container">
+        <h1>REGISTERED USERS</h1>
+        <div class="table">
+            <div>
+                <div>ID</div>
+                <div>Email</div>
+                <div>Name</div>
+                <div>Age</div>
+            </div>
+            <% user.forEach( (user) => { %>
+            <div>
+                <div><%=user.id%></div>
+                <div><%=user.email%></div>
+                <div><%=user.name%>
+                    <%if (user.admin) { %>
+                        <i class="fa fa-user-secret gold" title="Admin"></i>
+                    <% } %>
+                </div>
+                <div><%=user.age%></div>
+            </div>
+            <% }); %>
+        </div>
+    </div>
+</body>
+<script>
+function validate(el){
+    var valid = el.checkValidity();
+    var blank = el.validity.valueMissing;
+    // console.log(blank);
+    if (!valid || blank) {
+        el.nextElementSibling.className = 'invalid';
+    }
+    else {
+        el.nextElementSibling.className = '';
+    }
+}
+</script>
+<style>
+html,body{
+    font-family: 'Barlow', sans-serif;
+}
+h1{
+    margin: 0 !important;
+    margin-bottom: .5em !important; 
+}
+/*form {
+    width: max-content;
+    margin: 2em auto;
+    padding: 2.5em 5em;
+    background: rgba(224, 225, 226, .45) none;
+    color: rgba(0,0,0,.6);
+    border-radius: 25px;
+}*/
+.form-label{
+    display: flex;
+    flex-direction: column-reverse;
+}
+button{
+    background-color: hsl(177, 100%, 35%);
+    color: white;
+    font-weight: bold;
+    font-size: 1.25em;
+    border: 2px solid transparent !important;
+    transition: all .15s;
+    padding: .75rem;
+    width: min-content !important;
+    min-width: 150px;
+    /*margin: 1em auto !important;*/
+    margin-left: 0px;
+    margin-bottom: 0 !important; 
+    border-radius: 5px;
+    font-family: 'Barlow', sans-serif !important;
+    user-select: none;
+    cursor: pointer;
+}
+button:hover{
+    background-color: hsl(177, 90%, 40%);
+    border: 2px solid hsl(177, 100%, 75%) !important;
+}
+form > *{
+    display: block;
+    /*margin: auto;*/
+    margin-left:0px;
+    width: 250px;
+}
+label{
+    margin-top: .25em;
+    line-height: 1.75em;
+    font-weight: bold;
+    user-select: none;
+    cursor: pointer;
+    transition: all .15s;
+}
+input:not([type="checkbox"]){
+    padding: .5em;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+input:not([type="checkbox"]):valid+label{
+    color: hsl(177, 90%, 40%);
+}
+input:not([type="checkbox"])+label::after{
+    display: inline-block !important;
+    font: normal normal normal 14px/1 FontAwesome !important;
+    font-size: inherit !important;
+    text-rendering: auto !important;
+    -webkit-font-smoothing: antialiased !important;
+    width: 1.25em !important;
+    text-align: center;
+}
+input:not([type="checkbox"]):valid+label::after{
+    content: '\f058';
+    color: hsl(177, 90%, 40%);
+}
+.invalid,.invalid:focus{
+    color: #f2711c !important;
+}
+.invalid::after{
+    content: '\f06a';
+}
+input:not([type="checkbox"]):focus{
+    outline-color: hsl(177, 100%, 40%);
+}
+input:not([type="checkbox"]):focus+label{
+    color: hsl(177, 90%, 40%);
+}
+input{
+    margin-bottom: .5em;
+    font-family: 'Barlow', sans-serif !important;
+}
+input[type="checkbox"]{
+    display: inline-block !important;
+    font: normal normal normal 14px/1 FontAwesome !important;
+    font-size: inherit !important;
+    text-rendering: auto !important;
+    -webkit-font-smoothing: antialiased !important;
+}
+input[type="checkbox"]::before{
+    background-color: #eee;
+    cursor: pointer;
+}
+input[type="checkbox"]:checked::before{
+    content: '\f046';
+    color: #eaae00; 
+}
+input[type="checkbox"]:not(:checked):before{
+    content: '\f096';
+}
+input[type="checkbox"]:checked+label{
+    color: #eaae00; 
+}
+/*.container{
+    width: 750px;
+    margin: 2em auto;
+    padding: 1em;
+    text-align: center;
+    background-color: #49769c;
+    box-shadow: 0 2px 10px rgba(0,0,0,.3);
+    border-radius: 25px;
+}*/
+.table{
+    background-color: #fff;
+    border-radius: 20px;
+}
+.container > h1 {
+    color: white;
+}
+.table > div {
+    display: grid;
+    grid-template-columns: 2em 1fr 1fr 3em;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    padding: 1em 0;
+}
+.table > *:last-child{
+    border: none;
+}
+.gold{
+    color: #eaae00;
+    width: 1.5em;
+}
+</style>
+</html>
